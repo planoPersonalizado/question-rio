@@ -4,1021 +4,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentier App – Quiz Keto</title>
+  <title>Oferta Especial</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css.css">
-  <style>
-    /* Força a remoção de botões "Continuar" duplicados embaixo do card principal 
-       que podem estar surgindo por bugs de renderização do CSS/Navegador */
-    .screen > .btn-next { display: none !important; }
-    .q-card ~ .btn-next { display: none !important; }
-  </style>
+  <link rel="stylesheet" href="upsell.css">
 </head>
 
 <body>
 
-  <div class="header" id="headerArea">
-    <div class="logo">Valentier <span>App</span></div>
-    <div class="progress-wrap" id="progressWrap" style="display:none">
-      <div class="progress-bar" id="progressBar" style="width:0%"></div>
+  <div class="container">
+    <h1 class="title">Atenção: Assista a este vídeo antes de continuar...</h1>
+
+    <div class="video-wrapper">
+      <!-- MODO 1: Vídeo direto do computador (MP4) -->
+      <!-- Substitua o ./vsl.mp4 pelo nome do seu arquivo de vídeo (ex: meuvideo.mp4) -->
+      <video id="promoVideo" src="./vsl.mp4" playsinline autoplay muted></video>
+
+      <!-- Botão de Unmute Dinâmico com Layout de Box Escura -->
+      <div class="unmute-overlay" id="unmuteOverlay">
+        <div class="unmute-box">
+          <div class="unmute-text">Seu vídeo já começou</div>
+          <svg class="unmute-icon" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9v6h4l5 5V4L7 9H3z" />
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+            <path
+              d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+            <line x1="2" y1="2" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <div class="unmute-text">Clique para ouvir</div>
+        </div>
+      </div>
+
+      <!-- MODO 2: Usar link do YouTube, Vimeo ou Vturb -->
+      <!-- Caso queira usar um link, apague todo o MODO 1 acima (o botão de unmute e o <video>), tire o código abaixo dos comentários e insira o seu link: -->
+      <!-- <iframe src="SEU_LINK_AQUI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe> -->
+
+      <!-- Barra de progresso Falsa (Fita inferior) -->
+      <div class="fake-progress-container">
+        <div class="fake-progress-bar" id="fakeProgressBar"></div>
+      </div>
     </div>
-    <div class="progress-label" id="progressLabel" style="display:none"></div>
+
+    <!-- Conteúdo que aparece após 11 segundos -->
+    <div class="delayed-content" id="delayedContent">
+      <a href="#" class="btn-cta" id="ctaAccept">Sim, Eu Quero o meu Plano!</a>
+
+      <!-- Cole o seu Link Externo / Downsell dentro do href abaixo, mantendo as aspas. Exemplo: href="https://google.com" -->
+      <a href="https://www.valentier.com.br" class="btn-decline">Não, Prefiro perder essa oportunidade.</a>
+    </div>
   </div>
 
-  <div class="card-wrap">
-
-    <!-- â”€â”€ SCREEN 0: Landing / Gender â”€â”€ -->
-    <div class="screen active" id="s0">
-      <div class="kg-cta">
-        <h1 class="kg-title">
-          Resultados transformadores com Valentier<br>
-          <span class="accent">de uma vez por todas!</span>
-        </h1>
-        <p class="kg-subtitle">Qual é o seu gênero?</p>
-
-        <div class="kg-cards">
-          <button class="kg-card" onclick="selectGender('Feminino')">
-            <picture>
-              <source type="image/webp"
-                srcset="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/OQ1Px6a5aW-375.webp 375w, https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/OQ1Px6a5aW-480.webp 480w, https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/OQ1Px6a5aW-734.webp 734w"
-                sizes="100vw">
-              <img alt="Feminino" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/OQ1Px6a5aW-375.png">
-            </picture>
-            <div class="kg-card-label">Mulher</div>
-          </button>
-
-          <button class="kg-card" onclick="selectGender('Masculino')">
-            <picture>
-              <source type="image/webp"
-                srcset="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/vJM_MMkFXV-375.webp 375w, https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/vJM_MMkFXV-480.webp 480w, https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/vJM_MMkFXV-734.webp 734w"
-                sizes="100vw">
-              <img alt="Hombre" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/vJM_MMkFXV-375.png">
-            </picture>
-            <div class="kg-card-label">Homem</div>
-          </button>
-        </div>
-        <p style="font-size: 13px; color: var(--muted); margin-top: 20px;">
-          O serviço é fornecido por nutricionistas e treinadores certificados
-        </p>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 3: Objetivo â”€â”€ -->
-    <div class="screen" id="s3">
-      <div class="kg-cta" style="padding: 10px 20px;">
-        <h2 class="kg-title" style="font-size: 24px;">Qual é o seu objetivo de perda de peso?</h2>
-
-        <div id="goalCardsMale" style="display:none;" class="kg-goal-list">
-          <button class="kg-goal-card" onclick="selectGoal('Aparência e bem-estar')">
-            <div class="kg-goal-label">Melhorar minha aparência e bem-estar</div>
-            <img class="kg-goal-img" alt="Apariencia"
-              src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/Dsu65y76nU-375.png">
-          </button>
-          <button class="kg-goal-card" onclick="selectGoal('Saúde')">
-            <div class="kg-goal-label">Melhorar minha saúde</div>
-            <img class="kg-goal-img" alt="Salud"
-              src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/fPnH6JNT-m-375.png">
-          </button>
-          <button class="kg-goal-card" onclick="selectGoal('Ambos')">
-            <div class="kg-goal-label">Ambos</div>
-            <img class="kg-goal-img" alt="Ambos"
-              src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/AcrmT4p9LQ-375.png">
-          </button>
-        </div>
-
-        <div id="goalCardsFemale" style="display:none;" class="kg-goal-list">
-          <button class="kg-goal-card" onclick="selectGoal('Aparência e bem-estar')">
-            <div class="kg-goal-label">Melhorar minha aparência e bem-estar</div>
-            <img class="kg-goal-img" alt="Apariencia"
-              src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/6OC_0G2kFA-375.png">
-          </button>
-          <button class="kg-goal-card" onclick="selectGoal('Saúde')">
-            <div class="kg-goal-label">Melhorar minha saúde</div>
-            <img class="kg-goal-img" alt="Salud"
-              src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/EXJAQCNtQz-375.png">
-          </button>
-          <button class="kg-goal-card" onclick="selectGoal('Ambos')">
-            <div class="kg-goal-label">Ambos</div>
-            <img class="kg-goal-img" alt="Ambos"
-              src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/h8gUWAq7U--375.png">
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 1: Idade â”€â”€ -->
-    <div class="screen" id="s1">
-      <div class="kg-cta" style="padding: 10px 20px;">
-        <h2 class="kg-title" style="font-size: 24px;">Ajustar seu plano de perda de peso para a sua idade</h2>
-
-        <div id="ageCardsMale" style="display:none;" class="kg-cards">
-          <button class="kg-card" onclick="selectAge('18-26')">
-            <img alt="18-26" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/KADQVlZKpN-375.png">
-            <div class="kg-card-label">18-26</div>
-          </button>
-          <button class="kg-card" onclick="selectAge('27-38')">
-            <img alt="27-38" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/uNSYjeFXBk-375.png">
-            <div class="kg-card-label">27-38</div>
-          </button>
-          <button class="kg-card" onclick="selectAge('39-50')">
-            <img alt="39-50" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/1tZaeIRJIA-375.png">
-            <div class="kg-card-label">39-50</div>
-          </button>
-          <button class="kg-card" onclick="selectAge('50+')">
-            <img alt="50+" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/LEFWuLuLHG-375.png">
-            <div class="kg-card-label">50+</div>
-          </button>
-        </div>
-
-        <div id="ageCardsFemale" style="display:none;" class="kg-cards">
-          <button class="kg-card" onclick="selectAge('18-26')">
-            <img alt="18-26" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/HYZrYnnAsK-375.png">
-            <div class="kg-card-label">18-26</div>
-          </button>
-          <button class="kg-card" onclick="selectAge('27-38')">
-            <img alt="27-38" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/ddw7N6zRFG-375.png">
-            <div class="kg-card-label">27-38</div>
-          </button>
-          <button class="kg-card" onclick="selectAge('39-50')">
-            <img alt="39-50" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/0KuDDOg40H-375.png">
-            <div class="kg-card-label">39-50</div>
-          </button>
-          <button class="kg-card" onclick="selectAge('50+')">
-            <img alt="50+" src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/8z3zAJ82qo-375.png">
-            <div class="kg-card-label">50+</div>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 4: Medidas â”€â”€ -->
-    <div class="screen" id="s4">
-      <div class="q-card">
-        <div class="q-tag">Passo 3 de 9 &middot; Medidas</div>
-        <h2 class="q-title">Qual é o seu peso e altura atual?</h2>
-        <p class="q-sub">Usamos esses dados para calcular seus macros cetogênicos precisos.</p>
-
-        <div class="premium-inputs">
-          <div class="input-row premium-row">
-            <div class="premium-input-wrapper">
-              <div class="premium-icon-dynamic">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" viewBox="0 0 24 24">
-                  <path d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z" />
-                  <path d="M12 3v6" />
-                  <path d="M9 9h6" />
-                </svg>
-              </div>
-              <div class="premium-floating-label">
-                <input class="premium-input-dynamic" type="number" id="weightInput" min="50" max="150" required
-                  oninput="checkMeasures()">
-                <label id="weightLabel">Peso Atual</label>
-              </div>
-              <div class="premium-unit-badge" id="badgeWeight">kg</div>
-            </div>
-
-            <div class="premium-input-wrapper" id="wrapHeight">
-              <div class="premium-icon-dynamic">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" viewBox="0 0 24 24">
-                  <path d="M21 3H3v18h18V3z" />
-                  <path d="M21 8H9" />
-                  <path d="M21 16H9" />
-                  <path d="M21 12h-8" />
-                </svg>
-              </div>
-              <div class="premium-floating-label">
-                <input class="premium-input-dynamic" type="number" id="heightInput" min="100" max="250" required
-                  oninput="checkMeasures()">
-                <label id="heightLabel">Sua Altura</label>
-              </div>
-              <div class="premium-unit-badge" id="badgeHeight">cm</div>
-            </div>
-          </div>
-
-          <div class="premium-input-wrapper highlight-wrapper" id="wrapGoalWeight" style="margin-top: 16px;">
-            <div class="premium-icon-dynamic highlight-icon">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <circle cx="12" cy="12" r="6" />
-                <circle cx="12" cy="12" r="2" />
-              </svg>
-            </div>
-            <div class="premium-floating-label">
-              <input class="premium-input-dynamic" type="number" id="goalWeightInput" required
-                oninput="checkMeasures()">
-              <label id="goalWeightLabel">Peso Desejado</label>
-            </div>
-            <div class="premium-unit-badge" id="badgeGoal">kg</div>
-          </div>
-        </div>
-
-        <div class="premium-error-msg" id="measuresError"
-          style="display: none; color: #ff6b6b; font-size: 13px; font-weight: 600; text-align: center; margin-top: 16px; background: rgba(255, 107, 107, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(255, 107, 107, 0.2);">
-        </div>
-
-        <script>
-          // Regra Física "Por fora do sistema" para forçar os números nos limites
-          function enforceStrictBounds() {
-            const wInput = document.getElementById('weightInput');
-            const hInput = document.getElementById('heightInput');
-            const gInput = document.getElementById('goalWeightInput');
-            const errDiv = document.getElementById('measuresError');
-
-            function showTempMessage(msg) {
-              errDiv.textContent = msg;
-              errDiv.style.display = 'block';
-              setTimeout(() => { if (errDiv.textContent === msg) errDiv.style.display = 'none'; }, 4000);
-            }
-
-            wInput.addEventListener('focusout', function () {
-              if (!this.value) return;
-              let v = parseFloat(this.value);
-              if (v < 50) { this.value = 50; showTempMessage('Ops! Esse peso é muito pouco, ajustamos para a nossa faixa de avaliação (Mínimo: 50kg).'); }
-              if (v > 150) { this.value = 150; showTempMessage('Abaixo de 150kg é o ideal para o plano! Ajustamos o peso.'); }
-              if (typeof checkMeasures === 'function') checkMeasures();
-            });
-
-            hInput.addEventListener('focusout', function () {
-              if (!this.value) return;
-              let v = parseFloat(this.value);
-              if (v < 100) { this.value = 100; showTempMessage('Um pouco baixo demais, não? Ajustamos para a nossa régua de 100cm!'); }
-              if (v > 250) { this.value = 250; showTempMessage('Uau, você é gigante! Mas nossa métrica vai até 250cm.'); }
-              if (typeof checkMeasures === 'function') checkMeasures();
-            });
-
-            gInput.addEventListener('focusout', function () {
-              if (!this.value || !wInput.value) return;
-              let gw = parseFloat(this.value);
-              let w = parseFloat(wInput.value);
-              if (gw >= w) { this.value = w - 1; showTempMessage('Para fazer sentido, sua meta tem que ser menor do que o peso atual. Ajustado!'); }
-              if (typeof checkMeasures === 'function') checkMeasures();
-            });
-          }
-          enforceStrictBounds();
-        </script>
-
-        <button class="btn-next" id="btn4" disabled onclick="nextScreen('4a')">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 4a: Success Stories â”€â”€ -->
-    <div class="screen" id="s4a">
-      <div class="kg-cta" style="padding: 10px 20px; text-align: center;">
-        <h2 class="kg-title" style="font-size: 22px; text-align: center; margin-bottom: 20px; line-height: 1.3;">
-          <span style="color: var(--accent);">85% dos usuários do aplicativo Valentier</span> que permaneceram em seu
-          plano reduziram seu tamanho de roupa em <span style="color: var(--accent);">pelo menos 1 tamanho</span>
-        </h2>
-
-        <!-- MALE -->
-        <div id="successMale" style="display:none; flex-direction: column; gap: 15px;">
-          <div style="display: flex; gap: 10px; justify-content: center;">
-            <div style="position: relative; width: 48%;">
-              <img style="width: 100%; border-radius: 8px; object-fit: cover;"
-                src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/HBarpJx5-l-375.png" alt="Antes">
-              <div
-                style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                Antes</div>
-            </div>
-            <div style="position: relative; width: 48%;">
-              <img style="width: 100%; border-radius: 8px; object-fit: cover;"
-                src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/WzIiKimr7k-375.png" alt="Depois">
-              <div
-                style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                Depois</div>
-            </div>
-          </div>
-          <div style="font-size: 18px; font-weight: bold; color: var(--accent); margin-top: -5px;">Perdeu 24 kg</div>
-          <div style="font-size: 16px; font-weight: bold; margin-top: 10px;">Victor K. <span
-              style="color: var(--accent);">(38)</span></div>
-          <div style="color: #F3AF00; font-size: 18px; margin-top: -5px;">★★★★★</div>
-          <p style="font-size: 14px; font-style: italic; color: var(--text); padding: 0 10px;">
-            "Eu amo este aplicativo! É tão simples seguir meu plano e aprendi tanto sobre nutrição saudável que
-            agora é
-            fácil comer de forma saudável e não exagerar. Depois de perder 24 kg, tive que comprar um guarda-roupa
-            completamente novo porque todas as minhas roupas antigas estavam muito grandes! Eu passei de roupas XL para
-            M em 3 meses!"
-          </p>
-        </div>
-
-        <!-- FEMALE -->
-        <div id="successFemale" style="display:none; flex-direction: column; gap: 15px;">
-          <div style="display: flex; gap: 10px; justify-content: center;">
-            <div style="position: relative; width: 48%;">
-              <img style="width: 100%; border-radius: 8px; object-fit: cover;"
-                src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/uZZKw4Nvg1-375.png" alt="Antes">
-              <div
-                style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                Antes</div>
-            </div>
-            <div style="position: relative; width: 48%;">
-              <img style="width: 100%; border-radius: 8px; object-fit: cover;"
-                src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/DP9sOiyR05-375.png" alt="Depois">
-              <div
-                style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                Depois</div>
-            </div>
-          </div>
-          <div style="font-size: 18px; font-weight: bold; color: var(--accent); margin-top: -5px;">Perdeu 24 kg</div>
-          <div style="font-size: 16px; font-weight: bold; margin-top: 10px;">Linda B. <span
-              style="color: var(--accent);">(38)</span></div>
-          <div style="color: #F3AF00; font-size: 18px; margin-top: -5px;">★★★★★</div>
-          <p style="font-size: 14px; font-style: italic; color: var(--text); padding: 0 10px;">
-            "Eu amo este aplicativo! É tão simples seguir meu plano e aprendi tanto sobre nutrição saudável que
-            agora é
-            fácil comer de forma saudável e não exagerar. Depois de perder 24 kg, tive que comprar um guarda-roupa
-            completamente novo porque todas as minhas roupas antigas estavam muito grandes! Eu passei de roupas XL para
-            M em 3 meses!"
-          </p>
-        </div>
-
-        <button class="btn-next" onclick="nextScreen(5)" style="margin-top: 20px;">Continuar</button>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 5: Keto Info â”€â”€ -->
-    <div class="screen" id="s5">
-      <div class="kg-cta" style="padding: 10px 20px; text-align: center;">
-        <h2 class="kg-title" style="font-size: 24px; text-align: left; margin-bottom: 20px;">
-          A dieta Valentier é uma dieta baixa em carboidratos e alto teor de gorduras para perda de peso rápida
-        </h2>
-        <p class="kg-subtitle" style="text-align: left; font-size: 16px; margin-bottom: 20px;">
-          Na dieta Keto, você queima gordura para obter energia em vez de carboidratos e, como resultado, pode perder
-          de
-          2 a 5 kg por semana.
-        </p>
-
-        <div class="kg-macros"
-          style="display: flex; justify-content: space-around; margin-top: 20px; font-family: 'DM Sans', sans-serif;">
-          <div style="text-align: center;">
-            <div style="font-size: 22px; font-weight: 900; color: var(--accent);">70-80%</div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px;">GORDURAS</div>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 22px; font-weight: 900; color: var(--accent);">25-30%</div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px;">PROTEÍNA</div>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 22px; font-weight: 900; color: var(--accent);">5-10%</div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px;">CARBOS</div>
-          </div>
-        </div>
-
-        <div class="kg-diet-chart"
-          style="position: relative; max-width: 100%; margin: 20px auto; padding-bottom: 30px;">
-          <img alt="chart" class="pipe-img-loaded" style="width: 100%; max-width: 388px; border-radius: 12px;"
-            src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/meTFO35bke-388.svg">
-        </div>
-
-        <button class="btn-next" onclick="nextScreen('5a')" style="margin-top: 10px;">Continuar</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN 5a: Atividade física ── -->
-    <div class="screen" id="s5a">
-      <div class="q-card">
-        <div class="q-tag">Passo 4 de 9 · Estilo de vida</div>
-        <h2 class="q-title">Qual é o seu nível de atividade física atual?</h2>
-        <p class="q-sub">Isso define seu gasto calórico diário e a quantidade de gordura no plano.</p>
-        <div class="options" id="opts5a">
-          <div class="option" onclick="selectOpt(this,'5a')">
-            <div class="opt-icon">🛋️</div>
-            <div class="opt-text">
-              <div class="opt-main">Sedentário</div>
-              <div class="opt-hint">Trabalho de escritório, pouco movimento</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,'5a')">
-            <div class="opt-icon">🚶</div>
-            <div class="opt-text">
-              <div class="opt-main">Levemente ativo</div>
-              <div class="opt-hint">Caminhadas leves 1–3x na semana</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,'5a')">
-            <div class="opt-icon">🏃</div>
-            <div class="opt-text">
-              <div class="opt-main">Moderadamente ativo</div>
-              <div class="opt-hint">Exercícios 3–5x na semana</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,'5a')">
-            <div class="opt-icon">🏋️</div>
-            <div class="opt-text">
-              <div class="opt-main">Muito ativo</div>
-              <div class="opt-hint">Exercícios intensos ou trabalho físico</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-        </div>
-        <button class="btn-next" id="btn5a" disabled onclick="nextScreen(6)">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN 6: Restrições alimentares ── -->
-    <div class="screen" id="s6">
-      <div class="q-card">
-        <div class="q-tag">Passo 6 de 10 · Alimentação</div>
-        <h2 class="q-title">Você tem alguma restrição alimentar?</h2>
-        <p class="q-sub">Adaptamos as receitas às suas preferências e necessidades.</p>
-        <div class="options" id="opts6">
-          <div class="option" onclick="selectOpt(this,6)">
-            <div class="opt-icon">🥩</div>
-            <div class="opt-text">
-              <div class="opt-main">Sem restrições</div>
-              <div class="opt-hint">Como de tudo</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,6)">
-            <div class="opt-icon">🥛</div>
-            <div class="opt-text">
-              <div class="opt-main">Intolerante à lactose</div>
-              <div class="opt-hint">Evito laticínios</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,6)">
-            <div class="opt-icon">🌾</div>
-            <div class="opt-text">
-              <div class="opt-main">Intolerante a glúten</div>
-              <div class="opt-hint">Evito trigo e afins</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,6)">
-            <div class="opt-icon">🥦</div>
-            <div class="opt-text">
-              <div class="opt-main">Vegetariano / Vegano</div>
-              <div class="opt-hint">Sem carne ou alimentos de origem animal</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-        </div>
-        <button class="btn-next" id="btn6" disabled onclick="nextScreen('6a')">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 6a: Face Change â”€â”€ -->
-    <div class="screen" id="s6a">
-      <div class="kg-cta" style="padding: 10px 20px; text-align: center;">
-        <h2 class="kg-title" style="font-size: 22px; text-align: center; margin-bottom: 20px; line-height: 1.3;">
-          <span style="color: var(--accent);">Não é só o seu corpo!</span> Veja como a perda de peso pode mudar o seu
-          rosto!
-        </h2>
-
-        <!-- MALE IMAGE -->
-        <div id="faceSwapMale" style="display:none; margin-bottom: 20px;">
-          <img style="width: 100%; border-radius: 8px; object-fit: contain;"
-            src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/QHlWHFCU1S-375.png"
-            alt="Mudança de rosto">
-        </div>
-
-        <!-- FEMALE IMAGE -->
-        <div id="faceSwapFemale" style="display:none; margin-bottom: 20px;">
-          <img style="width: 100%; border-radius: 8px; object-fit: contain;"
-            src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/f6TPWff8P2-375.png"
-            alt="Mudança de rosto">
-        </div>
-
-        <div style="margin-top: 10px; margin-bottom: 30px;">
-          <svg style="width:100%; height:auto;" viewBox="0 0 352 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M0 8C0 3.58172 3.58172 0 8 0H102.464C105.725 0 108.66 1.9796 109.882 5.0034L122 35L109.882 64.9966C108.66 68.0204 105.725 70 102.464 70H7.99999C3.58172 70 0 66.4183 0 62V8Z"
-              fill="#891E1E"></path>
-            <path
-              d="M114 0H214.724C217.845 0 220.68 1.81405 221.988 4.64693L236 35L221.988 65.3531C220.68 68.1859 217.845 70 214.724 70H114L127.979 35L114 0Z"
-              fill="#F38908"></path>
-            <path
-              d="M228 0H344C348.418 0 352 3.58172 352 8L352 39.375L352 62C352 66.4183 348.418 70 344 70H228L243.655 35L228 0Z"
-              fill="#16BD72"></path>
-          </svg>
-          <div
-            style="display: flex; justify-content: space-between; font-weight: bold; font-size: 15px; margin-top: 8px; padding: 0 10px;">
-            <span>100 kg</span>
-            <span>80 kg</span>
-            <span>65 kg</span>
-          </div>
-        </div>
-
-        <p
-          style="font-size: 15px; color: var(--text); padding: 0 10px; margin-bottom: 30px; line-height: 1.5; text-align: left;">
-          A perda de peso pode eliminar grande parte da gordura e inchaço do rosto, ao redor dos olhos, sob a linha da
-          mandíbula e do queixo, dando à pele um aspecto mais jovem e saudável.
-        </p>
-
-        <button class="btn-next" onclick="nextScreen(7)">Continuar</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN 7: Tentativas passadas ── -->
-    <div class="screen" id="s7">
-      <div class="q-card">
-        <div class="q-tag">Passo 7 de 10 · Histórico</div>
-        <h2 class="q-title">Você já tentou alguma dieta antes?</h2>
-        <p class="q-sub">Entender o seu histórico nos ajuda a evitar erros comuns do passado.</p>
-        <div class="options" id="opts7">
-          <div class="option" onclick="selectOpt(this,7)">
-            <div class="opt-icon">✨</div>
-            <div class="opt-text">
-              <div class="opt-main">Nunca fiz dieta antes</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,7)">
-            <div class="opt-icon">🔄</div>
-            <div class="opt-text">
-              <div class="opt-main">Tentei, mas desisti logo</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,7)">
-            <div class="opt-icon">📉</div>
-            <div class="opt-text">
-              <div class="opt-main">Perdi peso, mas recuperei</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,7)">
-            <div class="opt-icon">🎯</div>
-            <div class="opt-text">
-              <div class="opt-main">Já tentei keto especificamente</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-        </div>
-        <button class="btn-next" id="btn7" disabled onclick="nextScreen('7a')">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN 7a: Valentier Info â”€â”€ -->
-    <div class="screen" id="s7a">
-      <div class="kg-cta" style="padding: 10px 20px; text-align: center;">
-        <div style="margin-bottom: 20px;">
-          <img alt="splash" style="width: 100%; max-width: 464px; border-radius: 12px; object-fit: contain;"
-            src="https://v3.ketogo.app/br-pt/k-20999m-brl-33m-br-default/img/aPA0uEygSQ-464.png">
-        </div>
-        <h2 class="kg-title" style="font-size: 24px; text-align: left; margin-bottom: 20px; line-height: 1.2;">
-          O método Valentier é diferente
-        </h2>
-        <p class="kg-subtitle" style="text-align: left; font-size: 15px; margin-bottom: 30px; line-height: 1.5;">
-          A maioria das pessoas que conseguem perder peso o recupera em 3 a 6 meses. O aplicativo Valentier ajudará não apenas a perder peso e atingir o seu peso ideal, mas também a mantê-lo facilmente.
-        </p>
-        <button class="btn-next" onclick="nextScreen(8)">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN 8: Maior desafio ── -->
-    <div class="screen" id="s8">
-      <div class="q-card">
-        <div class="q-tag">Passo 8 de 10 · Desafios</div>
-        <h2 class="q-title">Qual é o seu maior desafio para manter uma dieta?</h2>
-        <p class="q-sub">Identificamos os obstáculos para criar estratégias específicas para você.</p>
-        <div class="options" id="opts8">
-          <div class="option" onclick="selectOpt(this,8)">
-            <div class="opt-icon">🍕</div>
-            <div class="opt-text">
-              <div class="opt-main">Ansiedade e compulsão alimentar</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,8)">
-            <div class="opt-icon">⏳</div>
-            <div class="opt-text">
-              <div class="opt-main">Falta de tempo para cozinhar</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,8)">
-            <div class="opt-icon">💡</div>
-            <div class="opt-text">
-              <div class="opt-main">Não saber o que comer</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,8)">
-            <div class="opt-icon">😔</div>
-            <div class="opt-text">
-              <div class="opt-main">Falta de motivação</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-        </div>
-        <button class="btn-next" id="btn8" disabled onclick="nextScreen(9)">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN 9: Prazo ── -->
-    <div class="screen" id="s9">
-      <div class="q-card">
-        <div class="q-tag">Passo 9 de 10 · Prazo</div>
-        <h2 class="q-title">Em quanto tempo você quer alcançar seu objetivo?</h2>
-        <p class="q-sub">Isso define a intensidade e a velocidade do seu plano cetogênico.</p>
-        <div class="options" id="opts9">
-          <div class="option" onclick="selectOpt(this,9)">
-            <div class="opt-icon">🚀</div>
-            <div class="opt-text">
-              <div class="opt-main">O mais rápido possível</div>
-              <div class="opt-hint">Alta intensidade, resultados acelerados</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,9)">
-            <div class="opt-icon">📅</div>
-            <div class="opt-text">
-              <div class="opt-main">Em 1 a 3 meses</div>
-              <div class="opt-hint">Ritmo consistente e sustentável</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,9)">
-            <div class="opt-icon">🌱</div>
-            <div class="opt-text">
-              <div class="opt-main">Em 3 a 6 meses</div>
-              <div class="opt-hint">Mudança gradual de estilo de vida</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-          <div class="option" onclick="selectOpt(this,9)">
-            <div class="opt-icon">♾️</div>
-            <div class="opt-text">
-              <div class="opt-main">Sem pressa — para sempre</div>
-              <div class="opt-hint">Adotar o keto como estilo de vida</div>
-            </div>
-            <div class="opt-check">✓</div>
-          </div>
-        </div>
-        <button class="btn-next" id="btn9" disabled onclick="nextScreen(10)">Continuar &rarr;</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN 10: Email ── -->
-    <div class="screen" id="s10">
-      <div class="q-card" style="position: relative; overflow: hidden; border: 1px solid rgba(232, 201, 107, 0.2);">
-        <!-- Fundo decorativo sutil -->
-        <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(232,201,107,0.15) 0%, rgba(26,18,0,0) 70%); border-radius: 50%; pointer-events: none;"></div>
-        
-        <div class="q-tag">Passo 10 de 10 · Último passo</div>
-        <h2 class="q-title">Para onde enviamos o seu plano?</h2>
-        <p class="q-sub">O seu plano personalizado será entregue por e-mail gratuitamente.</p>
-
-        <div class="premium-inputs" style="margin-top: 30px;">
-          <div class="premium-input-wrapper" style="margin-bottom: 20px;">
-            <div class="premium-icon-dynamic">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </div>
-            <div class="premium-floating-label">
-              <input class="premium-input-dynamic" type="text" id="nameInput" required oninput="checkEmail()">
-              <label id="nameLabel">Seu nome completo</label>
-            </div>
-          </div>
-
-          <div class="premium-input-wrapper highlight-wrapper" style="margin-bottom: 25px;">
-            <div class="premium-icon-dynamic highlight-icon">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-            </div>
-            <div class="premium-floating-label">
-              <!-- Using type="text" with required ensures floating label animation -->
-              <input class="premium-input-dynamic" type="text" id="emailInput" required oninput="checkEmail()">
-              <label id="emailLabel">Seu melhor e-mail</label>
-            </div>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; justify-content: center; background: rgba(30, 215, 96, 0.08); border: 1px solid rgba(30, 215, 96, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
-          <span style="font-size: 16px; margin-right: 8px;">🔒</span>
-          <span style="font-size: 13px; color: #1ed760; font-weight: 600; letter-spacing: 0.5px;">Seus dados estão 100% seguros</span>
-        </div>
-
-        <button class="btn-next" id="btn10" disabled onclick="startLoading()">Ver meu plano personalizado &rarr;</button>
-      </div>
-    </div>
-
-    <!-- ── SCREEN: Loading (11s delay) ── -->
-    <div class="screen" id="sLoading">
-      <div class="kg-cta" style="padding: 10px 20px; text-align: center; margin-top: 40px; position: relative;">
-        <!-- Glowing animated background -->
-        <div style="position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 250px; height: 250px; background: radial-gradient(circle, rgba(232,201,107,0.15) 0%, rgba(26,18,0,0) 70%); pointer-events: none; z-index: -1;"></div>
-
-        <h2 class="kg-title" style="font-size: 24px; text-align: center; margin-bottom: 30px; line-height: 1.3;">
-          Preparando o seu plano.<br>Por favor, aguarde os resultados!
-        </h2>
-
-        <div style="display: flex; justify-content: center; position: relative; width: 194px; height: 194px; margin: 30px auto; filter: drop-shadow(0 0 15px rgba(229,163,100,0.25));">
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-             <span id="circPercent" style="font-size: 44px; font-weight: 900; color: var(--accent); line-height: 1; text-shadow: 0 2px 8px rgba(232,201,107,0.3);">0%</span>
-          </div>
-          <svg width="194" height="194" viewBox="0 0 194 194" style="transform: rotate(-90deg);">
-            <!-- Background ring -->
-            <circle cx="97" cy="97" r="87" fill="none" stroke="rgba(239, 220, 198, 0.05)" stroke-width="12"></circle>
-            <!-- Progress ring -->
-            <circle id="circCircle" cx="97" cy="97" r="87" fill="none" stroke="url(#loadingGrad)" stroke-width="12"
-              stroke-dasharray="546.63" stroke-dashoffset="546.63" style="transition: stroke-dashoffset 0.1s linear; stroke-linecap: round;">
-            </circle>
-            <defs>
-              <linearGradient id="loadingGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#E5A364" />
-                <stop offset="100%" stop-color="#E8C96B" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        <div style="text-align: left; margin-top: 40px; display: flex; flex-direction: column; gap: 12px;">
-          
-          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 12px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); animation: fadeUp 0.6s ease forwards;">
-             <div style="background: linear-gradient(135deg, rgba(232,201,107,0.2), rgba(229,163,100,0.05)); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
-                <span style="font-size: 16px;">🔥</span>
-             </div>
-             <div>
-                <span style="font-size: 15px; color: #fff; line-height: 1.4; font-weight: 500;">
-                  Você está entre os <span style="color: var(--accent); font-weight: 700;">20% dos candidatos mais propensos</span> a uma rápida perda de peso
-                </span>
-             </div>
-          </div>
-          
-           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 12px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); animation: fadeUp 0.6s ease forwards; animation-delay: 0.3s; opacity: 0;">
-             <div style="background: linear-gradient(135deg, rgba(232,201,107,0.2), rgba(229,163,100,0.05)); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
-                <span style="font-size: 16px;">📈</span>
-             </div>
-             <div>
-                <span style="font-size: 15px; color: #fff; line-height: 1.4; font-weight: 500;">
-                  Com base em suas respostas, você poderá perder <strong id="firstWeekLoss" style="color: var(--accent); font-size: 16px;">5 kg</strong> na sua primeira semana com nosso plano
-                </span>
-             </div>
-          </div>
-          
-           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 12px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); animation: fadeUp 0.6s ease forwards; animation-delay: 0.6s; opacity: 0;">
-             <div style="background: linear-gradient(135deg, rgba(232,201,107,0.2), rgba(229,163,100,0.05)); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
-                <span style="font-size: 16px;">🎯</span>
-             </div>
-             <div>
-                <span style="font-size: 15px; color: #fff; line-height: 1.4; font-weight: 500;">
-                  <span style="color: var(--accent); font-weight: 700;">89% dos usuários</span> com perfil semelhante ao seu alcançaram seus objetivos nos prazos previstos
-                </span>
-             </div>
-          </div>
-          
-           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 12px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); animation: fadeUp 0.6s ease forwards; animation-delay: 0.9s; opacity: 0;">
-             <div style="background: linear-gradient(135deg, rgba(232,201,107,0.2), rgba(229,163,100,0.05)); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
-                <span style="font-size: 16px;">✨</span>
-             </div>
-             <div>
-                <span style="font-size: 15px; color: #fff; line-height: 1.4; font-weight: 500;">
-                  Seu peso e perfil de saúde são perfeitos para a dieta Keto
-                </span>
-             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- â”€â”€ SCREEN: Results (Moved to valentier-checkout.html) â”€â”€ -->
-
-  </div><!-- /card-wrap -->
-
-  <div class="footer-note">© 2025 Valentier App · Todos os direitos reservados</div>
-
   <script>
-    const TOTAL = 9;
-    let currentScreen = 0;
-    let answers = {};
-    let unit = 'kg';
+    // Configuração do atraso (Delay) em milissegundos
+    // 11 segundos = 11000 milissegundos
+    const delayEmMilissegundos = 11000;
 
-    function startQuiz() {
-      document.getElementById('progressWrap').style.display = 'block';
-      document.getElementById('progressLabel').style.display = 'block';
-      showScreen(1);
-    }
+    setTimeout(function () {
+      document.getElementById('delayedContent').style.display = 'block';
+    }, delayEmMilissegundos);
 
-    function selectGender(gender) {
-      answers['gender'] = gender;
-      document.getElementById('ageCardsMale').style.display = (gender === 'Masculino') ? 'grid' : 'none';
-      document.getElementById('ageCardsFemale').style.display = (gender === 'Feminino') ? 'grid' : 'none';
-      document.getElementById('goalCardsMale').style.display = (gender === 'Masculino') ? 'flex' : 'none';
-      document.getElementById('goalCardsFemale').style.display = (gender === 'Feminino') ? 'flex' : 'none';
-      document.getElementById('successMale').style.display = (gender === 'Masculino') ? 'flex' : 'none';
-      document.getElementById('successFemale').style.display = (gender === 'Feminino') ? 'flex' : 'none';
-      document.getElementById('faceSwapMale').style.display = (gender === 'Masculino') ? 'block' : 'none';
-      document.getElementById('faceSwapFemale').style.display = (gender === 'Feminino') ? 'block' : 'none';
-      startQuiz();
-    }
+    // Lógica de Unmute e Play dinâmico do vídeo (Estilo VSL)
+    const video = document.getElementById('promoVideo');
+    const unmuteOverlay = document.getElementById('unmuteOverlay');
 
-    function selectAge(age) {
-      answers['age'] = age;
-      nextScreen(3);
-    }
+    if (unmuteOverlay && video) {
+      unmuteOverlay.addEventListener('click', function () {
+        video.muted = false;         // Ativa o som
+        // video.controls = true;    // Deixei desativado para ocultar a barra de progresso nativa e não estragar a mágica
+        video.currentTime = 0;       // Reinicia o vídeo do começo
+        video.play();                // Garante que continue tocando
+        unmuteOverlay.classList.add('hidden'); // Esconde o botão gigante
+      });
 
-    function selectGoal(goal) {
-      answers['q3'] = goal;
-      nextScreen(4);
-    }
-
-    function showScreen(n) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const el = document.getElementById('s' + n) || document.getElementById('s' + n);
-      if (el) { el.classList.add('active'); currentScreen = n; }
-      updateProgress(n);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function updateProgress(n) {
-      let stepCount = parseInt(n, 10);
-      if (stepCount >= 3) stepCount -= 1; // Ajuste porque pulamos a tela 2
-      const pct = Math.round((stepCount / TOTAL) * 100);
-      document.getElementById('progressBar').style.width = pct + '%';
-      document.getElementById('progressLabel').textContent = stepCount + ' de ' + TOTAL;
-    }
-
-    function selectOpt(el, qNum) {
-      const container = document.getElementById('opts' + qNum);
-      container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-      el.classList.add('selected');
-      answers['q' + qNum] = el.querySelector('.opt-main').textContent.trim();
-      const btn = document.getElementById('btn' + qNum);
-      if (btn) btn.disabled = false;
-    }
-
-    function nextScreen(n) {
-      showScreen(n);
-    }
-
-    function checkMeasures() {
-      const wStr = document.getElementById('weightInput').value;
-      const hStr = document.getElementById('heightInput').value;
-      const gwStr = document.getElementById('goalWeightInput').value;
-      const errorDiv = document.getElementById('measuresError');
-
-      const wrapHeight = document.getElementById('wrapHeight');
-      const inputHeight = document.getElementById('heightInput');
-      const wrapGoal = document.getElementById('wrapGoalWeight');
-      const inputGoal = document.getElementById('goalWeightInput');
-
-      let valid = false;
-      let errorMsg = '';
-
-      let minW = 50;
-      let maxW = 150;
-      let minH = 100;
-      let maxH = 250;
-
-      let wValid = false;
-      let hValid = false;
-
-      // Step 1: Validate Current Weight
-      if (wStr) {
-        const w = parseFloat(wStr);
-        if (w < minW) {
-          errorMsg = `O peso atual é muito baixo (Mínimo: ${minW} kg).`;
-        } else if (w > maxW) {
-          errorMsg = `O peso atual é muito alto (Máximo: ${maxW} kg).`;
-        } else {
-          wValid = true;
-        }
-      }
-
-      if (wValid) {
-        wrapHeight.classList.remove('locked');
-        inputHeight.disabled = false;
-      } else {
-        wrapHeight.classList.add('locked');
-        inputHeight.disabled = true;
-      }
-
-      // Step 2: Validate Height
-      if (wValid && hStr) {
-        const h = parseFloat(hStr);
-        if (h < minH) {
-          errorMsg = `A altura informada é muito baixa (Mínimo: ${minH} cm).`;
-        } else if (h > maxH) {
-          errorMsg = `A altura informada é muito alta (Máximo: ${maxH} cm).`;
-        } else {
-          hValid = true;
-        }
-      }
-
-      if (hValid) {
-        wrapGoal.classList.remove('locked');
-        inputGoal.disabled = false;
-      } else {
-        wrapGoal.classList.add('locked');
-        inputGoal.disabled = true;
-      }
-
-      // Step 3: Validate Goal Weight
-      if (hValid && gwStr) {
-        const w = parseFloat(wStr);
-        const gw = parseFloat(gwStr);
-        if (gw <= 0) {
-          errorMsg = `Insira um peso desejado válido.`;
-        } else if (gw >= w) {
-          errorMsg = `O peso desejado deve ser menor que o seu peso atual.`;
-        } else {
-          valid = true;
-        }
-      }
-
-      if (errorMsg) {
-        errorDiv.textContent = errorMsg;
-        errorDiv.style.display = 'block';
-      } else {
-        errorDiv.style.display = 'none';
-      }
-
-      document.getElementById('btn4').disabled = !valid;
-
-      if (valid) {
-        answers.weight = parseFloat(wStr);
-        answers.height = parseFloat(hStr);
-        answers.goalWeight = parseFloat(gwStr);
-        answers.unit = 'kg';
-      }
-    }
-
-    function checkEmail() {
-      const name = document.getElementById('nameInput').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
-      const valid = name.length > 1 && /\S+@\S+\.\S+/.test(email);
-      document.getElementById('btn10').disabled = !valid;
-      if (name) answers.name = name;
-      if (email) answers.email = email;
-    }
-
-    function startLoading() {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById('sLoading').classList.add('active');
-      document.getElementById('progressWrap').style.display = 'none';
-      document.getElementById('progressLabel').style.display = 'none';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      const u = answers.unit === 'lb' ? ' lb' : ' kg';
-      const lossVal = answers.unit === 'lb' ? '11' : '5';
-      document.getElementById('firstWeekLoss').textContent = lossVal + u;
-
-      let p = 0;
-      const totalTime = 11000;
-      const interval = 100;
-      const step = 100 / (totalTime / interval);
-
-      const circLabel = document.getElementById('circPercent');
-      const circFill = document.getElementById('circCircle');
-
-      const timer = setInterval(() => {
-        p += step;
-        if (p >= 100) {
-          p = 100;
-          clearInterval(timer);
-          setTimeout(() => showResults(), 200);
-        }
-        circLabel.textContent = Math.floor(p) + '%';
-        const offset = 546.63 - (546.63 * parseInt(p, 10) / 100);
-        circFill.style.strokeDashoffset = offset;
-      }, interval);
-    }
-
-    function selectPlanOffer(selectedId) {
-      ['offer6', 'offer3', 'offer1'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (!btn) return;
-        if (id === selectedId) {
-          btn.style.border = '2px solid #296C53';
-          if (btn.querySelector('#chk' + id.replace('offer', '') + '_a')) btn.querySelector('#chk' + id.replace('offer', '') + '_a').style.display = 'block';
-          if (btn.querySelector('#chk' + id.replace('offer', '') + '_i')) btn.querySelector('#chk' + id.replace('offer', '') + '_i').style.display = 'none';
-        } else {
-          btn.style.border = '2px solid #f1f2f3';
-          if (btn.querySelector('#chk' + id.replace('offer', '') + '_a')) btn.querySelector('#chk' + id.replace('offer', '') + '_a').style.display = 'none';
-          if (btn.querySelector('#chk' + id.replace('offer', '') + '_i')) btn.querySelector('#chk' + id.replace('offer', '') + '_i').style.display = 'block';
+      // Pausar/Despausar clicando no próprio vídeo (já que escondemos os controles padrões)
+      video.addEventListener('click', function () {
+        if (!video.muted) { // Só permite pausar se já passou da tela de "unmute"
+          if (video.paused) video.play();
+          else video.pause();
         }
       });
+
+      // Lógica da Barra de Progresso Psicológica (Falsa) a 60fps (Super Fluido e Liso)
+      const fakeProgressBar = document.getElementById('fakeProgressBar');
+
+      function updateFakeProgress() {
+        if (video.duration && fakeProgressBar) {
+          const realProgress = video.currentTime / video.duration; // De 0.0 a 1.0
+
+          // Matemática Psicológica para VSL (Rápido no inicio, freia no final)
+          let fakeProgress = Math.pow(realProgress, 0.4) * 100;
+          if (fakeProgress > 100) fakeProgress = 100; // Limite Máximo
+
+          fakeProgressBar.style.width = fakeProgress + '%';
+        }
+
+        // Chama o próximo quadro de tela em sincronia com o navegador (Padrão Ouro de Smoothness)
+        requestAnimationFrame(updateFakeProgress);
+      }
+
+      // Dá a ignição inicial do loop de atualização a 60fps
+      requestAnimationFrame(updateFakeProgress);
     }
 
-    function showResults() {
-      const u = answers.unit === 'lb' ? 'lb' : 'kg';
-      const w = answers.weight || 75;
-      const gw = answers.goalWeight || 65;
-      const gender = answers.gender || 'Feminino';
-
+    // Repassa os parametros de URL para a página de checkout
+    document.getElementById('ctaAccept').addEventListener('click', function(e) {
+      e.preventDefault();
+      const params = window.location.search; // ex: ?w=75&gw=65&g=Feminino&u=kg
+      
       document.body.style.transition = "all 0.8s ease-in-out";
       document.body.style.opacity = "0";
       document.body.style.transform = "scale(0.98)";
-
+      
       setTimeout(() => {
-        window.location.href = `upsell.html?w=${w}&gw=${gw}&g=${gender}&u=${u}`;
+        window.location.href = 'valentier-checkout.html' + params;
       }, 800);
-    }
+    });
   </script>
+
 </body>
 
 </html>
